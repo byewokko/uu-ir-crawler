@@ -1,0 +1,2 @@
+https://cs.wikipedia.org/wiki/Web_crawler
+https://cs.wikipedia.org/wiki/Palindrom

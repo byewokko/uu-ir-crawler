@@ -1,0 +1,12 @@
+<parameters>
+  <index>out/index</index>
+  <trecFormat>true</trecFormat>
+  <query>
+    <number>001</number>
+    <text>čvut</text>
+  </query>
+  <query>
+    <number>002</number>
+    <text>#1(ochran* soukrom*)</text>
+  </query>
+</parameters>

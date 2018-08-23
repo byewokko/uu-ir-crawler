@@ -1,16 +1,12 @@
 from crawler import Crawler
-from parser import Parser
 
 urlfile = "startlist.txt"
-urlfilter = r"https?://www.lupa.cz/[\w%-/]*/?"
+urlfilter = r"https?://www.lupa.cz/(clanky|aktuality)/[^/]*/?$"
 out = "out/corpus.xml"
 
 def main():
-    cr = Crawler(urlfile,urlfilter)
-    pr = Parser(out)
-    for page in cr.crawl(20):
-        urls = pr.parse(page)
-        cr.urls_from_list(urls)
+    cr = Crawler(out, urlfile, urlfilter)
+    cr.crawl(3000)
 
 if __name__ == "__main__":
     main()

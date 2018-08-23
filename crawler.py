@@ -1,6 +1,7 @@
 import re
 from queue import Queue, Empty
 from urllib.request import urlopen
+import multiprocessing as mp
 
 class Crawler():
     """
@@ -16,21 +17,25 @@ class Crawler():
             self.urls_from_file(urlfile)
     
     def add_url(self,url):
-        print(bool(self._urlfilter.match(url)), url)
+        if url.startswith("//"):
+            url = "https:" + url
+        elif url.startswith("/"):
+            url = "https://www.lupa.cz" + url
         if url not in self._known and self._urlfilter.match(url):
             self._known.add(url)
             self._queue.put_nowait(url)
     
     def urls_from_list(self,li):
         for url in li:
-            self.add_url(url.strip())
+            if url:
+                self.add_url(url.strip())
     
     def urls_from_file(self,urlfile):
         with open(urlfile,"r") as f:
             for li in f:
                 self.add_url(li.strip())
 
-    def crawl(self, maxpages, req_delay=50, max_parallel_req=5):
+    def crawl(self, maxpages, workers=10):
         # maxpages is the number of pages that will stop the crawler
         n_completed = 0
         print("Crawler started.")
@@ -39,8 +44,12 @@ class Crawler():
                 url = self._queue.get_nowait()
             except Empty:
                 break
-            print(url)
-            req = urlopen(url)
+            print("CRAWLING   ", url)
+            try:
+                req = urlopen(url)
+            except urllib.error.HTTPError as e:
+                print(e)
+                continue
             yield req
         
         print("Crawler finished.")

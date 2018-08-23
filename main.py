@@ -2,8 +2,8 @@ from crawler import Crawler
 from parser import Parser
 
 urlfile = "startlist.txt"
-urlfilter = r"https?://cs.wikipedia.org/wiki/[\w%]*"
-out = "output.txt"
+urlfilter = r"https?://www.lupa.cz/[\w%-/]*/?"
+out = "out/corpus.xml"
 
 def main():
     cr = Crawler(urlfile,urlfilter)
